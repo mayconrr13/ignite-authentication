@@ -1,6 +1,9 @@
+import { destroyCookie } from "nookies";
 import { useEffect } from "react";
 import { signOut, useAuth } from "../hooks/useAuth"
-import { api } from "../services/api";
+import { setupAPIClient } from "../services/api";
+import { api } from "../services/apiClient";
+import { withSSRAuth } from "../utils/withSSRAuth";
 
 export default function Dashboard() {
   const { user } = useAuth()
@@ -17,3 +20,12 @@ export default function Dashboard() {
     </h1>
   )
 }
+
+export const getServerSiderProps = withSSRAuth(async(ctx) => {
+  //refresh token pelo lado do servidor
+  const apiClient = setupAPIClient(ctx)
+
+  return {
+    props: {}
+  }
+})
